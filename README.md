@@ -6,8 +6,8 @@ Página de erro com vídeo em tela cheia que repete indefinidamente sem que se p
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![Sem dependências](https://img.shields.io/badge/Depend%C3%AAncias-nenhuma-2d0039?style=flat-square)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
 
 ![Prévia da página](assets/preview.jpg)
 
@@ -54,8 +54,9 @@ Algumas escolhas que não são óbvias pelo código:
 | --- | --- |
 | HTML5 | Estrutura semântica, `<video>` e atributos ARIA |
 | CSS3 | Grid, Custom Properties, `clamp()`, `object-fit`, `100svh` |
-| JavaScript (ES6+) | Controle do loop, troca de camadas e menu — sem bibliotecas |
+| JavaScript | Controle do loop, troca de camadas e menu — sem bibliotecas |
 | `requestVideoFrameCallback` | Gatilho do corte no quadro exato |
+| Figma | Layout da página e exportação dos numerais `4` e `4` em SVG |
 | Instrument Sans | Tipografia da navegação, via Google Fonts |
 
 ## Como executar
