@@ -11,6 +11,8 @@ Página de erro com vídeo em tela cheia que repete indefinidamente sem que se p
 
 ![Prévia da página](assets/preview.jpg)
 
+**[Ver o projeto ao vivo](https://otavio-2507.github.io/Pagina-404/)**
+
 </div>
 
 ## Visão geral
@@ -87,3 +89,7 @@ E acesse `http://localhost:8000`.
 ```
 
 A arte de origem **não é versionada**. A marca chegou como JPEG com fundo preto embutido — formato que impede aplicar o logotipo sobre qualquer outra superfície. As versões em uso foram extraídas dele convertendo luminância em canal alfa por rampa suave, o que descarta o fundo e as sombras projetadas mas preserva o antialias das bordas; um recorte por limiar seco deixaria serrilhadas as diagonais do `K` e do `R`. O JPEG original e o quadro do vídeo somam 1,1 MB e ficam fora do repositório: Git guarda binário para sempre, e a página só precisa do derivado.
+
+## Referência
+
+O projeto partiu de **[Desenvolvendo Site Animado com IA Gratuita, Figma e VS Code!](https://www.youtube.com/watch?v=A31Pg50p-Z8&t=7166s)**, do canal [Gustavo Campelo - Desenvolvedor](https://www.youtube.com/@gucampelo), usado como referência de construção.
