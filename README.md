@@ -11,7 +11,7 @@ Página de erro com vídeo em tela cheia que repete indefinidamente sem que se p
 
 ![Prévia da página](assets/preview.jpg)
 
-**[Ver o projeto ao vivo](https://otavio-2507.github.io/Pagina-404/)**
+**[Ver Projeto](https://otavio-2507.github.io/Pagina-404/)**
 
 </div>
 
