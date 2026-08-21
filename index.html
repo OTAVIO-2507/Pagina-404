@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página de erro 404 da PERFORSK.">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#eef1f2">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Página 404 | PERFORSK</title>
+</head>
+<body>
+    <header class="cabecalho">
+        <a class="marca" href="#" aria-label="PERFORSK — página inicial">
+            <img src="assets/logo.png" alt="PERFORSK" width="714" height="592">
+        </a>
+
+        <nav class="nav-principal" id="nav-principal" aria-label="Principal">
+            <a href="#">Sobre</a>
+            <a href="#">Galeria</a>
+            <a href="#">Contato</a>
+        </nav>
+
+        <button class="menu" type="button" aria-expanded="false" aria-controls="nav-principal" aria-label="Abrir menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <main>
+        <!-- a cena é decorativa; este título é o que anuncia o erro a leitores de tela -->
+        <h1 class="somente-leitor">Erro 404 — página não encontrada</h1>
+
+        <div class="divVideo" aria-hidden="true">
+            <video class="video-loop" autoplay muted playsinline preload="auto" poster="assets/monstrinho-poster.jpg">
+                <source src="assets/monstrinho.mp4" type="video/mp4">
+            </video>
+            <video class="video-loop" muted playsinline preload="none" data-src="assets/monstrinho.mp4"></video>
+        </div>
+
+        <img class="numero-erro" src="assets/numeros-404.svg" alt="" aria-hidden="true">
+    </main>
+
+    <script src="js/script.js" defer></script>
+</body>
+</html>
