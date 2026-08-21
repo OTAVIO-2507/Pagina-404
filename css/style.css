@@ -193,9 +193,17 @@ main{
     width: 100%;
     height: calc(100% - var(--piso));
     object-fit: cover;
-    object-position: center bottom;
+    object-position: center 45%;
     /* ele ocupa mais quadro; o corte extra sai das bordas vazias */
     transform: scale(1.07);
+}
+
+/* viewport mais larga que 2:1 (notebook baixo): o corte passa a ser vertical
+   e come a cabeça dele. Sem folga sobrando, o zoom extra sai de cena. */
+@media (min-aspect-ratio: 2 / 1) {
+    .divVideo video {
+        transform: none;
+    }
 }
 
 .divVideo video.frente { z-index: 2; }
@@ -208,8 +216,18 @@ main{
     width: 100%;
     height: calc(100% - var(--piso));
     object-fit: cover;
-    object-position: center bottom;
+    object-position: center 45%;
     opacity: 0.45;
+}
+
+@media (max-height: 700px) {
+    body {
+        --altura-cabecalho: 60px;
+    }
+
+    .marca img {
+        height: 36px;
+    }
 }
 
 @media (max-width: 600px) {
