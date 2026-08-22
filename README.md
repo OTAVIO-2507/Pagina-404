@@ -11,7 +11,8 @@ Página de erro com vídeo em tela cheia que repete indefinidamente sem que se p
 
 ![Prévia da página](assets/preview.jpg)
 
-**[Ver Projeto](https://otavio-2507.github.io/Pagina-404/)**
+[![Ver projeto](https://img.shields.io/badge/Ver_projeto-3642B5?style=for-the-badge&logo=googlechrome&logoColor=white)](https://otavio-2507.github.io/Pagina-404/)
+[![Código](https://img.shields.io/badge/C%C3%B3digo-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/OTAVIO-2507/Pagina-404)
 
 </div>
 
