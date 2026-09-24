@@ -41,11 +41,11 @@ Algumas escolhas que não são óbvias pelo código:
 
 **A troca não tem `seek`.** São dois elementos `<video>`. Enquanto um toca, o outro fica pausado no quadro zero, já decodificado e pronto na tela; trocar significa apenas subir uma camada no `z-index`. Não há busca no arquivo nem espera de buffer no instante crítico. A cópia que sai é pausada e rebobinada escondida atrás da outra, com 7,6 segundos de folga até precisar entrar de novo. O gatilho usa `requestVideoFrameCallback`, que entrega o `mediaTime` exato de cada quadro apresentado — um `setTimeout` acumularia desvio a cada volta e erraria a janela sob buffering.
 
-**O MP4 não declarava sua cor, e o navegador errava o palpite.** O arquivo não tinha caixa `colr` no container, e o SPS do H.264 vinha com `video_signal_type_present_flag = 0`. Sem etiqueta, o Chrome assume BT.709 pela heurística de 720p — mas o material foi codificado com coeficientes **BT.601**, e a matriz errada na conversão YUV→RGB devolvia o personagem **11% menos saturado** que a fonte. A correção foi uma caixa `colr` de 19 bytes inserida no `avc1`, sem recodificar um único quadro: como o `moov` neste arquivo fica depois do `mdat`, crescer o `moov` não desloca os offsets de chunk. O `mdat` continua byte a byte idêntico, conferido por SHA-256.
+**O MP4 não declarava sua cor, e o navegador errava o palpite.** O arquivo não tinha caixa `colr` no container, e o SPS do H.264 vinha com `video_signal_type_present_flag = 0`. Sem etiqueta, o Chrome assume BT.709 pela heurística de alta definição — mas o material foi codificado com coeficientes **BT.601**, e a matriz errada na conversão YUV→RGB devolvia o personagem **11% menos saturado** que a fonte. A correção foi uma caixa `colr` de 19 bytes inserida no `avc1`, sem recodificar um único quadro: como o `moov` neste arquivo fica depois do `mdat`, crescer o `moov` não desloca os offsets de chunk. O `mdat` continua byte a byte idêntico, conferido por SHA-256.
 
 **Nada de `mix-blend-mode` sobre vídeo em reprodução.** Os numerais usavam `multiply`, que obriga o compositor a reler o fundo a cada quadro numa camada do tamanho da tela. O SVG dependia disso: tinha um retângulo branco cobrindo os 1920×1080, invisível apenas porque branco no multiply não altera nada. Foi reescrito sem o retângulo, com a cor calculada para reproduzir o resultado do multiply sobre o cinza do estúdio — que é onde os dois `4` de fato ficam — usando composição normal.
 
-**A segunda cópia do vídeo espera a primeira.** As duas com `preload="auto"` disparando juntas levavam o navegador a buscar o mesmo arquivo duas vezes, porque nenhuma entrada de cache existia ainda. A reserva nasce sem `src` e só carrega depois do `canplaythrough` da primeira. Sozinho, isso poupa 1,8 MB.
+**A segunda cópia do vídeo espera a primeira.** As duas com `preload="auto"` disparando juntas levavam o navegador a buscar o mesmo arquivo duas vezes, porque nenhuma entrada de cache existia ainda. A reserva nasce sem `src` e só carrega depois do `canplaythrough` da primeira. Sozinho, isso poupa 4,1 MB.
 
 **A entrada da cena é animação, não classe via JavaScript.** A versão anterior aplicava `opacity: 0` e esperava o script adicionar a classe que revelava — o que significa que, com o JavaScript desativado ou falhando, a página ficava **completamente em branco**. Numa página de erro isso é inaceitável: ela precisa ser a última coisa a quebrar.
 
@@ -83,7 +83,7 @@ E acesse `http://localhost:8000`.
 ├── js/
 │   └── script.js
 └── assets/
-    ├── monstrinho.mp4           vídeo de fundo, com a caixa colr corrigida
+    ├── monstrinho.mp4           vídeo de fundo em 1080p, com a caixa colr corrigida
     ├── monstrinho-poster.jpg    primeiro quadro, exibido durante o carregamento
     ├── numeros-404.svg          numerais que emolduram a cena
     ├── logo.png                 marca em tinta escura, para fundo claro
