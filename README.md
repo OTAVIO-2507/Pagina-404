@@ -41,7 +41,11 @@ Algumas escolhas que não são óbvias pelo código:
 
 **A troca não tem `seek`.** São dois elementos `<video>`. Enquanto um toca, o outro fica pausado no quadro zero, já decodificado e pronto na tela; trocar significa apenas subir uma camada no `z-index`. Não há busca no arquivo nem espera de buffer no instante crítico. A cópia que sai é pausada e rebobinada escondida atrás da outra, com 7,6 segundos de folga até precisar entrar de novo. O gatilho usa `requestVideoFrameCallback`, que entrega o `mediaTime` exato de cada quadro apresentado — um `setTimeout` acumularia desvio a cada volta e erraria a janela sob buffering.
 
-**O MP4 não declarava sua cor, e o navegador errava o palpite.** O arquivo não tinha caixa `colr` no container, e o SPS do H.264 vinha com `video_signal_type_present_flag = 0`. Sem etiqueta, o Chrome assume BT.709 pela heurística de alta definição — mas o material foi codificado com coeficientes **BT.601**, e a matriz errada na conversão YUV→RGB devolvia o personagem **11% menos saturado** que a fonte. A correção foi uma caixa `colr` de 19 bytes inserida no `avc1`, sem recodificar um único quadro: como o `moov` neste arquivo fica depois do `mdat`, crescer o `moov` não desloca os offsets de chunk. O `mdat` continua byte a byte idêntico, conferido por SHA-256.
+**O MP4 não declarava sua cor, e o navegador errava o palpite.** O arquivo não tinha caixa `colr` no container, e o SPS do H.264 vinha com `video_signal_type_present_flag = 0`. Sem etiqueta, o Chrome assume BT.709 pela heurística de alta definição — mas o material foi codificado com coeficientes **BT.601**, e a matriz errada na conversão YUV→RGB devolvia o personagem **11% menos saturado** que a fonte. A etiqueta foi escrita nos dois lugares, sem recodificar um único quadro: uma caixa `colr` de 19 bytes no `avc1` e a descrição de cor dentro do próprio SPS, com `matrix_coefficients = 6`. Só o container não basta — quando o vídeo sobe para overlay de hardware o decodificador enxerga apenas o fluxo, e a caixa `colr` é ignorada; era por isso que o pôster aparecia saturado e a cor caía assim que o primeiro quadro entrava. Como o `moov` fica depois do `mdat`, crescer o `moov` não desloca os offsets de chunk: o `mdat` continua byte a byte idêntico, conferido por SHA-256.
+
+**Mas etiquetar a cor não bastava: o vídeo sai do overlay por um filtro que não filtra nada.** Decodificados, vídeo e pôster entregam exatamente os mesmos pixels — conferido lendo os dois pelo canvas, diferença `[0, 0, 0]`. Na tela, não: promovido a overlay de hardware, o vídeo é composto pela GPU por um caminho de cor diferente do que as imagens percorrem, e a cor saltava no instante em que o pôster dava lugar ao primeiro quadro. Um `filter: saturate(1)` no elemento — identidade, não altera um pixel — o desqualifica do overlay e o devolve à composição comum. É mais barato que `mix-blend-mode`: um passe no próprio elemento, sem reler o fundo a cada quadro.
+
+**O pôster tem a proporção exata do vídeo.** Ele era 1024×559 contra os 16:9 do clipe. Com `object-fit: cover`, proporções diferentes caem em caixas de desenho diferentes: na troca, o personagem crescia 38 px de altura e escorregava 6 px para o lado. O descompasso era antigo e passava despercebido enquanto o arquivo era leve; ao dobrar de peso, o pôster passou a ficar tempo suficiente na tela para o salto aparecer. Agora ele é o quadro 0 extraído do próprio vídeo, em 1024×576.
 
 **Nada de `mix-blend-mode` sobre vídeo em reprodução.** Os numerais usavam `multiply`, que obriga o compositor a reler o fundo a cada quadro numa camada do tamanho da tela. O SVG dependia disso: tinha um retângulo branco cobrindo os 1920×1080, invisível apenas porque branco no multiply não altera nada. Foi reescrito sem o retângulo, com a cor calculada para reproduzir o resultado do multiply sobre o cinza do estúdio — que é onde os dois `4` de fato ficam — usando composição normal.
 
@@ -83,8 +87,8 @@ E acesse `http://localhost:8000`.
 ├── js/
 │   └── script.js
 └── assets/
-    ├── monstrinho.mp4           vídeo de fundo em 1080p, com a caixa colr corrigida
-    ├── monstrinho-poster.jpg    primeiro quadro, exibido durante o carregamento
+    ├── monstrinho.mp4           vídeo de fundo em 1080p, cor etiquetada no container e no SPS
+    ├── monstrinho-poster.jpg    quadro 0 em 16:9, exibido durante o carregamento
     ├── numeros-404.svg          numerais que emolduram a cena
     ├── logo.png                 marca em tinta escura, para fundo claro
     ├── logo-branca.png          marca para fundos escuros

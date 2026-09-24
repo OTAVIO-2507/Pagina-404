@@ -196,6 +196,12 @@ main{
     object-position: center 45%;
     /* ele ocupa mais quadro; o corte extra sai das bordas vazias */
     transform: scale(1.07);
+    /* filtro identidade: não altera um pixel sequer, mas tira o vídeo do overlay
+       de hardware, onde a GPU o compõe por um caminho de cor diferente do das
+       imagens. Era isso que fazia a cor saltar na troca do pôster para o vídeo,
+       mesmo os dois decodificando para valores idênticos. Mais barato que
+       mix-blend-mode: é um passe no próprio elemento, sem reler o fundo. */
+    filter: saturate(1);
 }
 
 /* viewport mais larga que 2:1 (notebook baixo): o corte passa a ser vertical
